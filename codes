@@ -1,0 +1,54 @@
+def get_detailed_offers(urls_list, i=0,j=0):
+  main_keys = ['Rok', 'Przebieg', 'Paliwo', 'Typ_nadwozia']
+  for url in urls:
+    try:
+      new_url = urls[i]
+      detailed_content = requests.get(new_url, proxies = {'http' : f"http://{random.choice(prox)}"})
+      content = detailed_content.content
+      soup = BeautifulSoup(content, 'html.parser')
+      params_val = soup.find_all('li', {'class' : 'offer-params__item'})
+      main_val = soup.find_all('span', {'class' : 'offer-main-params__item'})
+      image = soup.find_all('img', {'class' : 'bigImage'})
+      regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+      a = re.findall(regex, str(image[0]))
+      get_image = a[0][0]
+      time.sleep(rand(5,15))
+      response_image = requests.get(get_image, proxies = {'http' : f"http://{random.choice(prox2)}"})
+      image_content = response_image.content
+      img = Image.open(BytesIO(image_content))
+      img_name = f'image{i}.png'
+      img_path = f'D:\Projekty Python\SAAB_Youngtimer_Detector\Images\{img_name}'
+      img.save(img_path)
+      new_car_param = {}
+      new_car_main = {}
+      keys = []
+      features = []
+      main_features = []
+      for par in params_val:
+        item = params_val[j].get_text()
+        item = item.split(sep='\n')
+        feature_1 = item[1]
+        if item[3] == '':
+          featrue_2 = item[4]
+        else:
+        featrue_2 = item[3]
+        feature_1 = feature_1.strip()
+        featrue_2 = featrue_2.strip()
+        keys.append(feature_1)
+        features.append(featrue_2)
+        j +=1
+      for k in range(len(keys)):
+        new_car_param[keys[k]] = features[k]
+      car_parameters_detailed.append(new_car_param)
+      for par in range(0,4):
+        item = main_val[par].get_text().strip()
+        feature = item
+        main_features.append(feature)
+      for k in range(len(main_keys)):
+        new_car_main[main_keys[k]] = main_features[k]
+      car_parameters_main.append(new_car_main)
+      i +=1
+      j= 0
+    except:
+      print('error occured')
+    # time.sleep(rand(60, 120))
