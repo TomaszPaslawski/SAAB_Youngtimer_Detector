@@ -22,7 +22,7 @@ def get_initial_load():
              car_version - list of strings from autoscout,
              main image for each of the detailed offer.
     """
-    image_counter = 0
+    image_counter = []
 
     # Code from this moment covers the scrapping of the autoscout webpage.
 
@@ -108,15 +108,19 @@ def get_initial_load():
                 img_name = f'image{img_count}.png'
                 img_path = f'D:\Projekty Python\SAAB_Youngtimer_Detector\Images\{img_name}'
                 img.save(img_path)
+                params_val['id'] = img_count
                 car_parameters_autoscout24.append(params_val)
+                image_counter.append(img_count)
                 img_count += 1
                 i += 1
             except:
                 i += 1
+                img_count += 1
+
 
     initial_data(get_number_of_pages())
     get_detailed_urls()
-    get_detailed_offers(urls, 0, img_count=image_counter)
+    get_detailed_offers(urls, 0, img_count=0)
 
     # Code from this moment covers the scrapping of the otomoto website.
 
@@ -124,6 +128,7 @@ def get_initial_load():
     announces_oto = []
     urls_oto = []
     car_parameters_otomoto = []
+    id_oto =[]
 
     def get_number_of_pages_oto():
         """
@@ -206,6 +211,7 @@ def get_initial_load():
                 img_name = f'image{img_count}.png'
                 img_path = f'D:\Projekty Python\SAAB_Youngtimer_Detector\Images\{img_name}'
                 img.save(img_path)
+                ida = img_count
                 img_count += 1
                 new_car_param = {}
                 keys = []
@@ -234,13 +240,19 @@ def get_initial_load():
                     item = main_val[par].get_text().strip()
                     new_car_param[main_keys[par]] = item
                 car_parameters_otomoto.append(new_car_param)
+                id_oto.append(ida)
+                ida += 1
                 i += 1
             except:
                 i += 1
+                img_count += 1
 
+    image_counter_oto = (image_counter[len(image_counter)-1])+1
     initial_data_oto(get_number_of_pages_oto())
     get_example()
     get_detailed_urls_oto(get_example())
-    get_detailed_offers(urls_oto, i=0, img_count=len(car_parameters_autoscout24))
+    get_detailed_offers(urls_oto, i=0, img_count=image_counter_oto)
 
-    return car_parameters_autoscout24, car_parameters_otomoto
+    return car_parameters_autoscout24, car_parameters_otomoto, id_oto
+
+
