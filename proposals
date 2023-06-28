@@ -4,5 +4,10 @@ Model wskazujący zdjęcie z boku i rozpoznający na jego postawie ilość drzwi
 
 Zawęzić wyszykiwanie po roku 1990 (SAAB 900).
 
+Dla autoscout w BodyType 'Pozostałe' można by spróbować zrobić uzupełnianie po rozpoznaniu ze zdjęcia.
 
+Rozpoznawanie koloru ze zdjęcia.
 
+Przepisywanie bez dataframeów
+
+Zapisywanie do bazy danych za pomocą SQL.

@@ -89,7 +89,8 @@ def get_initial_load():
         for url in urls:
             try:
                 new_url = 'https://www.autoscout24.pl' + urls[i]
-                detailed_content = requests.get(new_url, proxies={'http': f"http://{random.choice(prox)}"})
+                # detailed_content = requests.get(new_url, proxies={'http': f"http://{random.choice(prox)}"})
+                detailed_content = requests.get(new_url)
                 content = detailed_content.content
                 soup = BeautifulSoup(content, 'html.parser')
                 params = json.loads(soup.find('script', {'type': 'application/ld+json'}).get_text())
@@ -102,7 +103,8 @@ def get_initial_load():
                                                    '481px) and (max-width: 719px) and (-webkit-min-device-pixel-ratio: '
                                                    '1.01), (min-width: 1024px)'})
                 image_html = image[0]['srcset']
-                response_image = requests.get(image_html, proxies={'http': f"http://{random.choice(prox)}"})
+                # response_image = requests.get(image_html, proxies={'http': f"http://{random.choice(prox)}"})
+                response_image = requests.get(image_html)
                 image_content = response_image.content
                 img = Image.open(BytesIO(image_content))
                 img_name = f'image{img_count}.png'
@@ -195,7 +197,8 @@ def get_initial_load():
         for url in urls:
             try:
                 new_url = urls_oto[i]
-                detailed_content = requests.get(new_url, proxies={'http': f"http://{random.choice(prox)}"})
+                # detailed_content = requests.get(new_url, proxies={'http': f"http://{random.choice(prox)}"})
+                detailed_content = requests.get(new_url)
                 content = detailed_content.content
                 soup = BeautifulSoup(content, 'html.parser')
                 params_val = soup.find_all('li', {'class': 'offer-params__item'})
@@ -205,7 +208,8 @@ def get_initial_load():
                 image = soup.find_all('img', {'class': 'bigImage'})
                 a = image[0]['data-lazy']
                 get_image = a
-                response_image = requests.get(get_image, proxies={'http': f"http://{random.choice(prox2)}"})
+                # response_image = requests.get(get_image, proxies={'http': f"http://{random.choice(prox2)}"})
+                response_image = requests.get(get_image)
                 image_content = response_image.content
                 img = Image.open(BytesIO(image_content))
                 img_name = f'image{img_count}.png'
